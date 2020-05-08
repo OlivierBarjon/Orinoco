@@ -1,0 +1,19 @@
+/* ############# TYPO ############# */
+
+/* Titres H1 */
+@import url('https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap');
+/* utiliser : @include typoH1   */
+
+/* Textes et autres titres */
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Open+Sans:wght@300;400;600;700&family=Raleway:wght@200;400;600&family=Reenie+Beanie&display=swap');
+/* utiliser : @include typoP   */
+
+h1 {
+    @include typoH1;
+    color: $TextColor;
+}
+
+h2, h3, h4, p {
+    @include typoP;
+    color : $TextColor;
+}

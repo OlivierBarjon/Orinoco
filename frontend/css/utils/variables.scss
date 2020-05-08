@@ -1,0 +1,16 @@
+/* ############# VARIABLES ET MIXINS ############# */
+
+/* Polices de caractères*/
+
+@mixin typoH1 {
+    font-family: 'Reenie Beanie', cursive;
+}
+
+@mixin typoP {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+/* Couleurs */
+
+$TextColor : #000000;
