@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":["base/typo.scss","base/base.scss","utils/variables.scss"],"names":[],"mappings":"AAGQ,4EAIA,8KCLR,EACI,qBDOJ,GELI,oCFOA,MEGS,gBANT,mCFQA,MEFS","file":"styles.css"}
+{"version":3,"sourceRoot":"","sources":["base/typo.scss","base/base.scss","utils/variables.scss","pages/home.scss"],"names":[],"mappings":"AAGQ,4EAIA,8KCLR,EACI,qBDOJ,GELI,oCFOA,MEGS,gBANT,mCFQA,MEFS,KCdb,mBACI","file":"styles.css"}
