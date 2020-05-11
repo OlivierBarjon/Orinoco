@@ -4,7 +4,7 @@ const nomModele = document.getElementById ("nomModele");
 const prixModele = document.getElementById ("prixModele");
 const descripModele = document.getElementById ("descripModele");
 const imageModele = document.getElementById ("imageModele");
-const ButtonModele = document.getElementById ("ButtonModele");
+const buttonModele = document.getElementById ("buttonModele");
 
 // fonction de récupération du paramètre d'url
 function obtenirParametreUrl () {
@@ -51,7 +51,7 @@ request.onreadystatechange = function () {
 
         imageModele.innerHTML=`<img class="card-img-top card__body--image" src="${response[indexBdd].imageUrl}" alt="${response[indexBdd].name}"/>`;
 
-        ButtonModele.innerHTML=`<button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button>`;
+        buttonModele.innerHTML=`<button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button>`;
 
         //TEST
         console.table(response);
@@ -60,3 +60,10 @@ request.onreadystatechange = function () {
     }
 request.open("GET","http://localhost:3000/api/cameras");
 request.send();
+
+// Local storage
+
+buttonModele.addEventListener("click", function(event){
+        localStorage.setItem(indexBdd,obtenirParametreUrl());
+        event.stopPropagation();
+});
