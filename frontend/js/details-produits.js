@@ -66,7 +66,7 @@ request.open("GET","http://localhost:3000/api/cameras");
 request.send();
 
 
-// Local storage
+// AJOUT DE L'ARTICLE AU PANIER
 
 buttonModele.addEventListener("click", function(event){
         localStorage.setItem(indexBdd,obtenirParametreUrl()); // ajoute l'article au local storage
@@ -75,3 +75,7 @@ buttonModele.addEventListener("click", function(event){
         textButton.textContent = "Article ajouté au panier";//modification du texte du bouton
         event.stopPropagation();
         });
+
+//TEST
+console.log(obtenirParametreUrl());
+console.log(indexBdd);

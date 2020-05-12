@@ -6,6 +6,19 @@ for (i=0 ; i<localStorage.length; i++) {
 //TEST
 console.table(panier);
 
+
+
+
+// INSERTION DU CONTENU DU PANIER DANS LA PAGE
+for (let article of panier) {
+    var element = article.split("|"); //creation d'un tableau pour chaque article
+      var nouvelArticle = document.createElement("li"); // crée un nouvel élément li
+      var nouveauContenu = document.createTextNode(element[1]); // et lui donne le contenu de l'index 1 du tableau
+      nouvelArticle.appendChild(nouveauContenu);// ajoute le texte au nouveau li créé
+      var currentUl = document.getElementById ("listeArticles");
+      currentUl.appendChild(nouvelArticle);// ajoute le nouvel élément crée et son contenu dans le DOM
+};
+
 // FONCTION GLOBALE DE CALCUL DU PRIX TOTAL
 
 function calculPrixTotal () {
@@ -32,19 +45,6 @@ console.log(calculPrixTotal());
 
 const totalDuPanier = document.getElementById("totalPanier");
 totalDuPanier.textContent=`${calculPrixTotal()} €`;
-
-
-// INSERTION DU CONTENU DU PANIER DANS LA PAGE
-for (let article of panier) {
-    var element = article.split("|"); //creation d'un tableau pour chaque article
-      var nouvelArticle = document.createElement("li"); // crée un nouvel élément li
-      var nouveauContenu = document.createTextNode(element[1]); // et lui donne le contenu de l'index 1 du tableau
-      nouvelArticle.appendChild(nouveauContenu);// ajoute le texte au nouveau li créé
-      var currentUl = document.getElementById ("listeArticles");
-      currentUl.appendChild(nouvelArticle);// ajoute le nouvel élément crée et son contenu dans le DOM
-};
-
-
 
 // FONCTION CALLBACK DE SUPPRESSION DU PANIER
 const btnVidePanier = document.getElementById("btnVidePanier"); // récupération du bouton "vider le panier" du DOM
