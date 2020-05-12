@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="./css/styles.css">
-        <script src="./js/request-produit.js" defer></script>
+        <script src="./js/details-produits.js" defer></script>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>
@@ -14,7 +14,7 @@
     <body>
 
         <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-            <a href="index.html" target="_parent"><h1 class="my-0 mr-md-auto display-1">Orinoco</h1></a>
+            <a class="my-0 mr-md-auto display-1" href="index.html" target="_parent"><h1>Orinoco</h1></a>
             <a class="btn btn-outline-primary" href="panier.html">Votre panier</a>
         </header>
           
@@ -35,8 +35,13 @@
                   <div class="mb-3" id="imageModele"><!-- imageModele --></div>
                   <p class="card-title pricing-card-title">Prix : <span id="prixModele"><!-- prixModele --></span> € ttc</p>
                   <p class="text-justify" id="descripModele"><!-- descriptionModele --></p>
+                  <p><label for="choixLentille"></label>Choisissez une lentille en option :</label>
+                  <select name="choixLentille" id="choixLentille">
+                  <!-- choixLentille -->
+                  </select>
+                  </p>
 
-                  <div id="buttonModele"></div>
+                  <div id="buttonModele"><button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button></div>
 
                 </div>
               </div>
