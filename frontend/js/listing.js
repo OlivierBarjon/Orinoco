@@ -59,11 +59,11 @@ request.onreadystatechange = function () {
         imageModele4.innerHTML=`<img class="card-img-top card__body--image" src="${response[3].imageUrl}" alt="${response[3].name}"/>`;
         imageModele5.innerHTML=`<img class="card-img-top card__body--image" src="${response[4].imageUrl}" alt="${response[4].name}"/>`;
 
-        ButtonModele1.innerHTML=`<a href="produit.html?ID=${response[0]._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[0].name} </a>`;
-        ButtonModele2.innerHTML=`<a href="produit.html?ID=${response[1]._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[1].name} </a>`;
-        ButtonModele3.innerHTML=`<a href="produit.html?ID=${response[2]._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[2].name} </a>`;
-        ButtonModele4.innerHTML=`<a href="produit.html?ID=${response[3]._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[3].name} </a>`;
-        ButtonModele5.innerHTML=`<a href="produit.html?ID=${response[4]._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[4].name} </a>`;
+        ButtonModele1.innerHTML=`<a href="produit.html?ID=${response[0]._id}|${response[0].name}|${response[0].price}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[0].name} </a>`;
+        ButtonModele2.innerHTML=`<a href="produit.html?ID=${response[1]._id}|${response[1].name}|${response[1].price}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[1].name} </a>`;
+        ButtonModele3.innerHTML=`<a href="produit.html?ID=${response[2]._id}|${response[2].name}|${response[2].price}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[2].name} </a>`;
+        ButtonModele4.innerHTML=`<a href="produit.html?ID=${response[3]._id}|${response[3].name}|${response[3].price}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[3].name} </a>`;
+        ButtonModele5.innerHTML=`<a href="produit.html?ID=${response[4]._id}|${response[4].name}|${response[4].price}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit ${response[4].name} </a>`;
 
         //TEST
         console.table(response);

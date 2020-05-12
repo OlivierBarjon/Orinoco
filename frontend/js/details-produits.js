@@ -20,19 +20,19 @@ function obtenirParametreUrl () {
 let indexBdd;
 // assignation des index de la Bdd en fonction des Id
 switch (obtenirParametreUrl()){
-    case "5be1ed3f1c9d44000030b061" :
+    case "5be1ed3f1c9d44000030b061|Zurss%2050S|49900" :
         indexBdd = 0;
         break;
-    case "5be1ef211c9d44000030b062" :
+    case "5be1ef211c9d44000030b062|Hirsch%20400DTS|309900" :
         indexBdd = 1;
         break;
-    case "5be9bc241c9d440000a730e7" :
+    case "5be9bc241c9d440000a730e7|Franck%20JS%20105|209900" :
         indexBdd = 2;
         break;
-    case "5be9c4471c9d440000a730e8" :
+    case "5be9c4471c9d440000a730e8|Kuros%20TTS|159900" :
         indexBdd = 3;
         break;
-    case "5be9c4c71c9d440000a730e9" :
+    case "5be9c4c71c9d440000a730e9|Katatone|59900" :
         indexBdd = 4;
         break;
 }
