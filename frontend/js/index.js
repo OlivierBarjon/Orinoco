@@ -1,5 +1,5 @@
-// 1 : RECUPERATION D'UN EMPLACEMENT DU DOM POUR Y PLACER NOTRE CONTENU DYNAMIQUEMENT
-const appContainer = document.getElementById("app"); // récupération de l'élément "app" du DOM dans une constante "appContainer"
+// 1 : RECUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER TOUT NOTRE CONTENU DYNAMIQUEMENT
+const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 
@@ -96,32 +96,16 @@ class ListProducts { // On crée une classe "ListProducts" qui servira à créer
 
 class ProductView { // On crée une classe qui servira à créer un objet...
     constructor(product) { // ...qui prendra un parametre
-        this.product = product; //... le parametre "product" (qui contient un objet JSON - étape 5:) sera assigné à la propriété "product".
+        this.product = product; //... le parametre "product" (qui contient un seul objet JSON - étape 5:) sera assigné à la propriété "product".
     }
     render() { // cette classe a également une méthode de type render...
         const productContainer = document.createElement("div"); // ...qui crée une <div> (en créant un élément du DOM de type <div> qui s'appelle "productContainer") ...
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
-        productContainer.appendChild(new ButtonProductDetailView().render()); // on ajoute à cette <div> notre bouton crée à l'étape 4.1 :
+        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// on ajoute les styles au modele de conteneur
         return productContainer; // cette méthode d'instance de classe retourne la constante "productContainer" qui contient un modèle de vue de produit opérationnel
     } 
 }
 
-// 4.1 : BOUTON D'ACCES A LA PAGE DE DETAIL
-
-class ButtonProductDetailView { // On crée une classe qui servira à créer un objet...
-    constructor(product) { // ... qui prendra un paramètre
-        this.product = product; //... le parametre "product" (qui contient un objet JSON - étape 5:) sera assigné à la propriété "product".
-    }
-    render () { // cette classe a également une méthode de type render...
-        const buttonLink = document.createElement("a"); //... qui crée un bloc <a> (en créant un élément du DOM de type <a> qui s'appelle "buttonLink")...
-        buttonLink.innerHTML = "Fiche produit"; // l'ancre du lien contiendra un texte simple...
-        buttonLink.setAttribute("class", "btn btn-lg btn-outline-primary"); //... des classes
-        buttonLink.setAttribute("type", "button"); //... un type
-        buttonLink.setAttribute("href", `produit.html?id=`); // ... une adresse de lien
-        return buttonLink; // cette méthode d'instance de classe retourne la constante "buttonLink" qui contient un bouton opérationnel
-    }
-}
 
 // 5 : CREATION D'UN COMPOSANT POUR GENERER LA LISTE COMPLETE DES RENDUS QUI DEVRA ETRE INTEGREE AU DOM
 
@@ -159,9 +143,9 @@ class ProductListView { // On crée une classe qui servira à créer un objet...
 
 
 
-// 6 : EXECUTION DES COMPOSANTS ET DE LA VUE AU CHARGEMENT DE LA FENÊTRE
-window.onload = function() {  // A l'évènement window.onload (chargement de la fenêtre), on exécute une fonction...
-    const listProducts = new ListProducts(); //...qui crée un nouvel objet "listProduct" à partir de la class "ListProduct" de l'étape 2:
+// 6 : CHARGEMENT DE LA LISTE DES LE CHARGEMENT COMPLET DE LA PAGE
+window.onload = function() {  
+    const listProducts = new ListProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct" de l'étape 2:
     console.log(listProducts); //TEST
 } 
 
