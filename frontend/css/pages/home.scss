@@ -2,3 +2,8 @@
 /*.card__body--image {
     max-width:15rem;
 }*/
+
+#app .card {
+    min-width:15rem;
+    //max-width:25rem; // supprimer cette ligne pour afficher le 5 ème produit sur toute la largeur
+}

@@ -3,79 +3,20 @@ const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 
-// 1.1 : COMPOSANT DE RECUPERATION DE LA LISTE D'OBJETS JSON
-/*class ApiBdd { // création d'une méthode statique pour retourner la liste d'objet JSON dans un tableau
-    constructor(callback) {
-        this.callback = callback;
-    }
-    newRequest() {
-        return xhr = new XMLHttpRequest();
-    }
-    getListProduct () { 
-        var request = this.newRequest();
-        request.onreadystatechange = function() {
-            if(this.readyState == XMLHttpRequest.DONE && this.status == 200) {
-                var response = JSON.parse(this.responseText);}
-            };
-        request.open("GET", "http://localhost:3000/api/cameras", true);
-        request.send();
-    }
-}*/
-
 // 2 : COMPOSANT DE RECUPERATION DES OBJETS JSON DANS UN TABLEAU ET D'INTEGRATION AU DOM
 class ListProducts { // On crée une classe "ListProducts" qui servira à créer un objet "listproducts" (à l'étape 6:) ...
     constructor() {
-         // ... qui  aura une propriété "products" ayant pour valeur la [ liste des objets JSON ]
-        this.products = [
-
-            {
-            "lenses":["35mm 1.4","50mm 1.6"],
-            "_id":"5be1ed3f1c9d44000030b061",
-            "name":"Zurss 50S",
-            "price":49900,
-            "description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "imageUrl":"http://localhost:3000/images/vcam_1.jpg"
-            },
-            
-            {
-            "lenses":["50mm 1.8","60mm 2.8","24-60mm 2.8/4.5"],
-            "_id":"5be1ef211c9d44000030b062",
-            "name":"Hirsch 400DTS",
-            "description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "price":309900,
-            "imageUrl":"http://localhost:3000/images/vcam_2.jpg"
-            },
-            
-            {
-            "lenses":["25mm 4.5"],
-            "_id":"5be9bc241c9d440000a730e7",
-            "name":"Franck JS 105",
-            "price":209900,
-            "description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "imageUrl":"http://localhost:3000/images/vcam_3.jpg"
-            },
-            
-            {
-            "lenses":["50mm 1.7","35mm 1.4"],
-            "_id":"5be9c4471c9d440000a730e8",
-            "name":"Kuros TTS",
-            "description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "price":159900,
-            "imageUrl":"http://localhost:3000/images/vcam_4.jpg"
-            },
-            
-            {
-            "lenses":["50mm 1.4","35mm 1.8","28-200mm 2.8/4.5"],
-            "_id":"5be9c4c71c9d440000a730e9",
-            "name":"Katatone",
-            "description":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-            "price":59900,
-            "imageUrl":"http://localhost:3000/images/vcam_5.jpg"
+        this.request = new XMLHttpRequest;
+        this.request.onreadystatechange = function(){
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                const response = JSON.parse(this.responseText);
+                 this.products= response;  // ... qui  aura une propriété "products" ayant pour valeur la [ liste des objets JSON ]
+                 this.productListComplete = new ProductListView(this.products); // ... qui créera un objet "productListComplete" à partir de la classe "ProductListView" en lui fournissant comme paramètre la [liste des objets JSON]...
+                 appContainer.appendChild(this.productListComplete.render()); // ... et qui d'ajoutera à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu (l'objet DOM "productListContainer") de ce nouvel objet "productListView" (étape 5:)
             }
-            
-            ];
-        this.productListComplete = new ProductListView(this.products); // ... qui créera un objet "productListComplete" à partir de la classe "ProductListView" en lui fournissant comme paramètre la [liste des objets JSON]...
-        appContainer.appendChild(this.productListComplete.render()); // ... et qui d'ajoutera à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu (l'objet DOM "productListContainer") de ce nouvel objet "productListView" (étape 5:)
+        };
+        this.request.open("GET", "http://localhost:3000/api/cameras", true);
+        this.request.send();
     }
 }
 
@@ -122,25 +63,6 @@ class ProductListView { // On crée une classe qui servira à créer un objet...
         return productListContainer; // cette méthode d'instance de classe retourne la constante "productListContainer" qui pourra être ajouté au DOM car elle est composé d'une <div> contenant tous les rendus de produits individuels
     }
 }
-
-
-/*class ApiConsumer {
-    constructor({ baseApi }) { // descontruction 
-        this.baseApi = baseApi;
-    }
-    newRequest() {
-        return xhr = new XMLHttpRequest();
-    }
-    getListProduct (callback) {
-        const request = this.newRequest()
-        request.onload = callback
-        request.open("GET", this.baseApi+'/products', true);
-        request.send();
-    }
-}*/
-
-
-
 
 
 // 6 : CHARGEMENT DE LA LISTE DES LE CHARGEMENT COMPLET DE LA PAGE
