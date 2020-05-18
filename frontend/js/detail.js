@@ -3,6 +3,8 @@ const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 
+
+
 // 2 : COMPOSANT DE RECUPERATION DES OBJETS JSON DANS UN TABLEAU ET D'INTEGRATION DE CES OBJETS AU DOM
 class ListProducts { // On crée une classe "ListProducts" qui servira à créer un objet "listproducts"
     constructor() {
@@ -36,17 +38,34 @@ class ProductView { // On crée une classe qui servira à créer un objet...
 }
 
 
+//COMPOSANT DE DETERMINATION DE L'IDENTIFIANT DU PRODUIT SELECTIONNE A PARTIR DE L'URL
+class Identifiant {
+    constructor(url){
+        this.url = url;
+    }
+    determinId () {
+        const id = this.url.split("=");
+        return id[1]; // on ne conserve que ce qui se situe après le "="
+    }
+}
+
+
 // 4 : CREATION D'UN COMPOSANT POUR GENERER LA LISTE COMPLETE DES RENDUS QUI DEVRA ETRE INTEGREE AU DOM
 
 class ProductListView { // On crée une classe qui servira à créer un objet...
     constructor(products){ // ... qui prendra 1 paramètre de type [] Product
         this.products = products; // L'objet aura une propriété "products" ayant pour valeur la donnée récupérée dans le paramètre (il s'agira de la [liste des objets JSON] - étape 2:).
+        this.url = window.location.search;
+        this.id = new Identifiant(this.url).determinId();
     }
     render() { // Cette classe à également une méthode de type render...
         const productListContainer = document.createElement("div"); // ...qui crée une <div> (en créant un élément du DOM qui s'appelle "productListContainer")...
         productListContainer.setAttribute("class", "card-deck mb-3 text-center");
         for (let product of this.products){// ... et qui déclenchera l'éxécution d'une boucle pour chaque product du tableau "products"...
+        const IdentifiantProduit=product._id;
+            if(this.id == IdentifiantProduit) {
           productListContainer.appendChild(new ProductView(product).render()); // ... afin d'y intégrer un rendu crée (à l'étape 4:) par le composant "productView" pour chaque produits de la liste 
+             };
         };
         return productListContainer; // cette méthode d'instance de classe retourne la constante "productListContainer" qui pourra être ajouté au DOM car elle est composé d'une <div> contenant tous les rendus de produits individuels
     }
