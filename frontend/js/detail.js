@@ -23,6 +23,7 @@ class ListProducts { // On crée une classe "ListProducts" qui servira à créer
 }
 
 
+
 // 3 : CREATION D'UN COMPOSANT DE VUE POUR GENERER LE RENDU TYPE POUR 1 PRODUIT
 
 class ProductView { // On crée une classe qui servira à créer un objet...
@@ -31,7 +32,7 @@ class ProductView { // On crée une classe qui servira à créer un objet...
     }
     render() { // cette classe a également une méthode de type render...
         const productContainer = document.createElement("div"); // ...qui crée une <div> (en créant un élément du DOM de type <div> qui s'appelle "productContainer") ...
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><div id="buttonModele"><button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button></div></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// on ajoute les styles au modele de conteneur
         return productContainer; // cette méthode d'instance de classe retourne la constante "productContainer" qui contient un modèle de vue de produit opérationnel
     } 

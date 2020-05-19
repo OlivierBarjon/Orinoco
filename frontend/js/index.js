@@ -6,7 +6,15 @@ const appContainer = document.getElementById("app");
 // 2 : COMPOSANT DE RECUPERATION DES OBJETS JSON DANS UN TABLEAU ET D'INTEGRATION DE CES OBJETS AU DOM
 class ListProducts { // On crée une classe "ListProducts" qui servira à créer un objet "listproducts"
     constructor() {
-        this.request = new XMLHttpRequest;
+        new Request().get("http://localhost:3000/api/cameras").then((result)=>{
+            const response = JSON.parse(result);
+            this.products= response;  // cet objet aura une propriété "products" ayant pour valeur la [ liste des objets JSON ]
+            this.productListComplete = new ProductListView(this.products); // ... cet objet créera un objet "productListComplete" à partir de la classe "ProductListView" en lui fournissant comme paramètre la [liste des objets JSON]...
+            appContainer.appendChild(this.productListComplete.render()); // ... et ajoutera à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu (l'objet DOM "productListContainer") de ce nouvel objet "productListComplete"
+        }).catch(()=>{
+            console.log("erreur");
+        })
+        /* this.request = new XMLHttpRequest;
         this.request.onreadystatechange = function(){
             if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
                 const response = JSON.parse(this.responseText);
@@ -16,7 +24,8 @@ class ListProducts { // On crée une classe "ListProducts" qui servira à créer
             }
         };
         this.request.open("GET", "http://localhost:3000/api/cameras", true);
-        this.request.send();
+        this.request.send(); */
+
     }
 }
 
