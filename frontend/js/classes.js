@@ -1,4 +1,4 @@
-// ###### COMPOSANTS DE TRAITEMENT DES OBJETS JSON LA HOME PAGE #######
+// ###### COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA HOME PAGE #######
 
 // COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT
 
@@ -33,18 +33,40 @@ class ProductListView {
 
 
 
-// ###### COMPOSANTS DE TRAITEMENT DES OBJETS JSON LA PAGE PRODUIT #######
+// ###### COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE PRODUIT #######
 
 // COMPOSANT DE GÉNÉRATION DE LA VUE DU PRODUIT
 
 class ProductViewPP { // PP pour "Page Produit"
     constructor(product) { 
         this.product = product; // le parametre "product" contient un seul objet JSON.
+        this.listeLentilles = product.lenses; // on récupère la liste des lentilles
     }
+
     render() { 
         const productContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
+
         productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><div id="buttonModele"><button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button></div></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
+
+        // options lentilles
+        const labelChoixLentille = document.createElement("label");
+        labelChoixLentille.setAttribute("for","LensOpt");
+        labelChoixLentille.textContent = "Choisissez une lentille en option :";
+        const selectChoixLentille = document.createElement("select");
+        selectChoixLentille.setAttribute("name","LensOpt");
+        selectChoixLentille.setAttribute("class","form-control mb-3 w-50 product__option-lens");
+        for (let lentille of this.listeLentilles){ // pour chaque lentilles
+            var nouvelleLentille = document.createElement("option"); // on crée un nouvel élément <option>
+            var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille
+            nouvelleLentille.appendChild(nouveauContenu);// on l'ajoute à l'élément <option>
+            selectChoixLentille.appendChild(nouvelleLentille); // on ajoute l'élément <option> à l'élément <select>
+        };
+        productContainer.appendChild(labelChoixLentille); // on ajoute notre label 
+        productContainer.appendChild(selectChoixLentille); // on ajoute notre liste de selection
+
+
+
         return productContainer; // on retourne l'élément du DOM "productContainer" 
     } 
 }
@@ -62,6 +84,7 @@ class Identifiant {
 }
 
 
+
 // COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM
 
 class ProductDetailView { 
@@ -76,7 +99,7 @@ class ProductDetailView {
         for (let product of this.products){ // pour chaque product du tableau "products"...
         const IdentifiantProduit=product._id; // ... on récupère l'identifiant du produit...
             if(this.id == IdentifiantProduit) { // ...on vérifie que cet identifiant correspondant à celui transmis dans notre url
-          productDetailContainer.appendChild(new ProductViewPP(product).render()); // on intégre le rendu crée par le composant ProductViewPP
+                productDetailContainer.appendChild(new ProductViewPP(product).render()); // on intégre le rendu crée par le composant ProductViewPP
              };
         };
         return productDetailContainer; // on retourne le conteneur <div> avec le produit.
