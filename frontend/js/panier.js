@@ -11,7 +11,8 @@ class PanierProducts {
             this.productPanierView = new ProductPanierView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
             appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
         }).catch(()=>{
-            console.log("erreur de chargement");
+            console.log("panier vide");
+            appContainer.textContent="Votre panier est vide :-("; //si aucune ??????????????
         })
     }
 }

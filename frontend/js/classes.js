@@ -135,12 +135,29 @@ class ProductViewPanier {
     }
     render() { 
         const productContainer = document.createElement("div"); 
-        productContainer.setAttribute("class", "mb-4");// un peu de style
-        productContainer.innerHTML = `<p>- ${this.product.name} ( ${this.product.price} €)</p>`; 
+       // productContainer.setAttribute("class", "mb-3");// un peu de style
+        productContainer.innerHTML = `<p>${this.product.name} (${this.product.price} €)</p>`; 
         //productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
+
+        // bouton de suppresion de l'article
+        const boutonSuppPanier = document.createElement("button");
+        //boutonSuppPanier.setAttribute("type", "button");
+        //boutonSuppPanier.setAttribute("id","boutonSuppPanier");
+        boutonSuppPanier.setAttribute("class", "btn btn-sm btn-outline-primary w-25");// un peu de style
+        boutonSuppPanier.textContent = "Supprimer l'article";
+        productContainer.appendChild(boutonSuppPanier);
+
+        const productName = this.product.name;
+        boutonSuppPanier.addEventListener("click", function(event){
+            localStorage.removeItem(productName); // supprime l'article du local storage
+            window.history.go(); // raffraichissement de la page pour supprimer le produit.
+            event.stopPropagation();
+            });
+
         return productContainer; // on retourne l'élément du DOM "productContainer" 
     } 
 }
+
 
 
 // COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
@@ -152,26 +169,62 @@ class ProductPanierView {
     }
     render() { 
         const productPanierContainer = document.createElement("div"); 
-        productPanierContainer.setAttribute("class", "card-deck mb-3 text-center"); //  on ajoute un peu de style
+        productPanierContainer.setAttribute("class", "card mb-3 text-center panier"); //  on ajoute un peu de style
         const prixTotalPanierContainer = document.createElement("div");
+        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on ajoute un peu de style
         const prixTotal = [];
+        const articlesPanier = [];
         for (let product of this.products){ // pour chaque produits
             if (localStorage.getItem(product.name)){ // si le produit est dans le localStorage
                 productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
                 prixTotal.push(product.price);
+                articlesPanier.push(product._id);
             }
         };
+        console.log(articlesPanier);//TEST
 
         // prix total
         const reducer = (accumulator, currentValue)=> accumulator + currentValue;
         const totalCommande = prixTotal.reduce(reducer);
         console.log(prixTotal);//TEST
         console.log(totalCommande);//TEST
-        prixTotalPanierContainer.innerHTML = `Total de votre commande = ${totalCommande} €`;
+        prixTotalPanierContainer.innerHTML = `Total de la commande = ${totalCommande} €`;
         productPanierContainer.appendChild(prixTotalPanierContainer);
+
+
+        // envoie du panier au formulaire
+        const envoiePanierFormulaire = new Commande(articlesPanier).expedition();
 
         return productPanierContainer; // on retourne le conteneur <div> avec le(s) produit(s) et le prix total
     }
 }
 
 
+// COMPOSANT DE TRAITEMENT DU FORMULAIRE
+
+class Commande {
+    constructor(articlesPanier) {
+        this.products = articlesPanier;//tableau des produits commandé à envoyer à l'API
+    }
+    expedition() {
+        const form = document.getElementById("form");//on récupère le formulaire
+        const contact ={};
+        // On récupère les valeurs du formulaire pour en créer un objet contact ???? lire le cotenu avec un événement ?
+        contact.prenom = document.getElementById("prenom").value;
+        contact.nom = document.getElementById("nom").value;
+        contact.adresse = document.getElementById("adresse").value;
+        contact.cp = document.getElementById("cp").value;
+        contact.ville = document.getElementById("ville").value;
+        contact.email = document.getElementById("email").value;
+        // créer un objet contact avec les valeurs du formulaire ?????? Condition ???????
+         console.log(contact);//TEST
+         // on écoute la validation du formulaire pour envoyer une requête post
+        form.addEventListener("submit", function(){ //Promesse Post ??????????? paralléliser plusieurs requetes ? une post puis une get ?
+                const request = new XMLHttpRequest();
+                request.open("POST","http://localhost:3000/api/cameras", true);
+                //request.setRequestHeader("Content-Type","application/json");
+                request.send(products, contact);// contact ???
+        });
+        //return ???;
+    }
+}
