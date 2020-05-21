@@ -21,3 +21,6 @@ class DetailProduct {
 window.onload = function() {  
     const detailProduct = new DetailProduct(); // Création d'un nouvel objet "detailProduct" à partir de la class "DetailProduct"
 } 
+
+
+

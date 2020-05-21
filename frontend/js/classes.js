@@ -46,7 +46,7 @@ class ProductViewPP { // PP pour "Page Produit"
     render() { 
         const productContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
 
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><div id="buttonModele"><button type="button" class="btn btn-lg btn-outline-primary">Ajouter au panier</button></div></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
 
         // options lentilles
@@ -55,7 +55,7 @@ class ProductViewPP { // PP pour "Page Produit"
         labelChoixLentille.textContent = "Choisissez une lentille en option :";
         const selectChoixLentille = document.createElement("select");
         selectChoixLentille.setAttribute("name","LensOpt");
-        selectChoixLentille.setAttribute("class","form-control mb-3 w-50 product__option-lens");
+        selectChoixLentille.setAttribute("class","form-control mb-3 w-25 product__option-lens");
         for (let lentille of this.listeLentilles){ // pour chaque lentilles
             var nouvelleLentille = document.createElement("option"); // on crée un nouvel élément <option>
             var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille
@@ -65,7 +65,21 @@ class ProductViewPP { // PP pour "Page Produit"
         productContainer.appendChild(labelChoixLentille); // on ajoute notre label 
         productContainer.appendChild(selectChoixLentille); // on ajoute notre liste de selection
 
-
+        // bouton panier
+        const boutonPanier = document.createElement("button");
+        boutonPanier.setAttribute("type", "button");
+        boutonPanier.setAttribute("id","boutonPanier");
+        boutonPanier.setAttribute("class", "btn btn-lg btn-outline-primary w-75");// un peu de style
+        boutonPanier.textContent = "Ajouter au panier";
+        productContainer.appendChild(boutonPanier);
+        const nomProdLStorage = this.product.name;
+        const prixProdLStorage = this.product.price;
+        boutonPanier.addEventListener("click", function(event){
+            localStorage.setItem(nomProdLStorage,prixProdLStorage); // ajoute l'article au local storage
+            boutonPanier.classList.replace("btn-outline-primary","btn-primary");//modifie l'apparence du bouton
+            boutonPanier.textContent = "Article ajouté au panier";//modification du texte du bouton
+            event.stopPropagation();
+            });
 
         return productContainer; // on retourne l'élément du DOM "productContainer" 
     } 
@@ -82,6 +96,7 @@ class Identifiant {
         return id[1]; // on retourne l'id qui se situe après le "="
     }
 }
+
 
 
 
