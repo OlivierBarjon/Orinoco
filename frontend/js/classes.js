@@ -40,7 +40,6 @@ class ProductListView {
 class ProductViewPP { // PP pour "Page Produit"
     constructor(product) { 
         this.product = product; // le parametre "product" contient un seul objet JSON.
-        this.listeLentilles = product.lenses; // on récupère la liste des lentilles
     }
 
     render() { 
@@ -56,7 +55,7 @@ class ProductViewPP { // PP pour "Page Produit"
         const selectChoixLentille = document.createElement("select");
         selectChoixLentille.setAttribute("name","LensOpt");
         selectChoixLentille.setAttribute("class","form-control mb-3 w-25 product__option-lens");
-        for (let lentille of this.listeLentilles){ // pour chaque lentilles
+        for (let lentille of this.product.lenses){ // pour chaque lentilles
             var nouvelleLentille = document.createElement("option"); // on crée un nouvel élément <option>
             var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille
             nouvelleLentille.appendChild(nouveauContenu);// on l'ajoute à l'élément <option>
@@ -120,3 +119,59 @@ class ProductDetailView {
         return productDetailContainer; // on retourne le conteneur <div> avec le produit.
     }
 }
+
+
+
+
+// ###### COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE PANIER #######
+
+
+
+// COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT DU PANIER
+
+class ProductViewPanier { 
+    constructor(product) { 
+        this.product = product; // le parametre "product" contient un seul objet JSON.
+    }
+    render() { 
+        const productContainer = document.createElement("div"); 
+        productContainer.setAttribute("class", "mb-4");// un peu de style
+        productContainer.innerHTML = `<p>- ${this.product.name} ( ${this.product.price} €)</p>`; 
+        //productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
+        return productContainer; // on retourne l'élément du DOM "productContainer" 
+    } 
+}
+
+
+// COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
+
+class ProductPanierView {
+    constructor(products) {
+        this.products = products;
+
+    }
+    render() { 
+        const productPanierContainer = document.createElement("div"); 
+        productPanierContainer.setAttribute("class", "card-deck mb-3 text-center"); //  on ajoute un peu de style
+        const prixTotalPanierContainer = document.createElement("div");
+        const prixTotal = [];
+        for (let product of this.products){ // pour chaque produits
+            if (localStorage.getItem(product.name)){ // si le produit est dans le localStorage
+                productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
+                prixTotal.push(product.price);
+            }
+        };
+
+        // prix total
+        const reducer = (accumulator, currentValue)=> accumulator + currentValue;
+        const totalCommande = prixTotal.reduce(reducer);
+        console.log(prixTotal);//TEST
+        console.log(totalCommande);//TEST
+        prixTotalPanierContainer.innerHTML = `Total de votre commande = ${totalCommande} €`;
+        productPanierContainer.appendChild(prixTotalPanierContainer);
+
+        return productPanierContainer; // on retourne le conteneur <div> avec le(s) produit(s) et le prix total
+    }
+}
+
+

@@ -1,3 +1,5 @@
+// REQUETE PRINCIPALE
+
 class Request { 
     constructor() {
         this.request = new XMLHttpRequest;
