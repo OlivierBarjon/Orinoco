@@ -16,7 +16,7 @@ class ListProducts {
     }
 }
 
-// CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE
+// CHARGEMENT DE LA LISTE DES PRODUITS AU CHARGEMENT COMPLET DE LA PAGE
 window.onload = function() {  
     const listProducts = new ListProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
-} 
+}

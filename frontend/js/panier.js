@@ -11,13 +11,12 @@ class PanierProducts {
             this.productPanierView = new ProductPanierView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
             appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
         }).catch(()=>{
-            console.log("panier vide");
-            appContainer.textContent="Votre panier est vide :-("; //si aucune ??????????????
+            console.log("erreur");
         })
     }
 }
 
 // CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE
 window.onload = function() {  
-    const listProducts = new PanierProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
+    const panierProducts = new PanierProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
 } 

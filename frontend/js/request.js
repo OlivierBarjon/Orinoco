@@ -20,5 +20,18 @@ class Request {
         this.request.send();
         return promise // on retourne cette promesse
     }
-}
 
+    /* post(url){
+        this.request.open("POST", url);
+        const promise = new Promise((resolve, reject) => {
+            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+                resolve(this.responseText) // (à traiter avec .then)
+            }
+            if (this.status >399) {
+                reject(); // (à traiter avec .catch)
+            }
+        });
+        this.request.send(products, contact);
+        return promise // on retourne cette promesse
+    } */
+}

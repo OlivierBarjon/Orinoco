@@ -6,9 +6,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="./css/styles.css">
-        <script src="./js/panier.js" defer></script>
         <script src="./js/request.js" defer></script>
         <script src="./js/classes.js" defer></script>
+        <script src="./js/panier.js" defer></script>
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     </head>
@@ -26,40 +26,49 @@
           
         <div class="container">
 
-            <div id="app"></div>
+            <div id="app"><!-- commande --></div>
 
-            <div class="card mb-3 text-left">
+            <div class="card mb-3 text-center">
 
-             <p>Remplissez le formulaire ci-dessous pour valider votre commande : </p>
-                <form id="form">
-                  <p>
-                  <label for="prenom">Prénom :</label>
-                  <input type="text" name="prenom" id="prenom" size="20" required />
-                  </p>
-                  <p>
-                  <label for="nom">Nom :</label>
-                  <input type="text" name="nom" id="nom" size="20" required />
-                  </p>
-                  <p>
-                  <label for="adresse">Adresse :</label>
-                  <input type="text" name="adresse" id="adresse" size="30" required />
-                  </p>
-                  <p>
-                  <label for="CP">Code postal :</label>
-                  <input type="number" name="cp" id="cp" min="01000" max="95999" required />
-                  </p>
-                  <p>
-                  <label for="ville">Ville :</label>
-                  <input type="text" name="ville" id="ville" size="20" required />
-                  </p>
-                  <p>
-                  <label for="mail">Email :</label>
-                  <input type="email" name="email" id="email" required />
-                  </p>
-                  <p><input type="submit" value="Envoyer" /></p>
+             <p>Vos coordonnées : </p>
+
+                <form id="form" method="post" action="confirmation.html">
+                  <div class="form-row">
+
+                    <div class="col-sm-6 my-1 px-3">
+                        <label for="firstName">Prénom :</label>
+                        <input type="text" name="firstName" id="firstName" class="form-control" required />
+                    </div>
+
+                    <div class="col-sm-6 my-1 px-3">
+                        <label for="lastName" >Nom :</label>
+                        <input type="text" name="lastName" id="lastName" class="form-control" required />
+                    </div>
+
+
+                    <div class="col-sm-6 my-1 px-3">
+                        <label for="address">Adresse :</label>
+                        <input type="text" name="address" id="address" class="form-control" required />
+                    </div>
+
+                    <div class="col-sm-6 my-1 px-3">
+                        <label for="city">Ville :</label>
+                        <input type="text" name="city" id="city" class="form-control" required />
+                    </div>
+    
+
+                    <div class="col-sm-12 my-3 px-3">
+                        <label for="email">Email :</label>
+                        <input type="email" name="email" id="email" class="form-control" required />
+                    </div>
+
+                    <div class="col-sm-12 my-3">
+                      <button type="submit" class="btn btn-outline-primary" id="submitBtn">Validez la commande</button>
+                    </div>
+
+                  </div>  
                 </form>
                
-
             </div>
           
             <footer class="pt-4 my-md-5 pt-md-5 border-top">
