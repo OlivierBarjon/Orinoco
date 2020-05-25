@@ -3,9 +3,9 @@ const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 // COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM
-class Confirmation { 
+/* class Confirmation { 
     constructor() {
-        new Request().post("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
             const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
             this.confirmationView = new ConfirmationView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
@@ -14,7 +14,7 @@ class Confirmation {
             console.log("erreur de chargement");
         })
     }
-}
+} */
 
 // CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE
 window.onload = function() {  
