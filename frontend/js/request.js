@@ -21,17 +21,18 @@ class Request {
         return promise // on retourne cette promesse
     }
 
-    /* post(url){
+    post(url, body){
         this.request.open("POST", url);
-        const promise = new Promise((resolve, reject) => {
-            if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {
+        this.request.setRequestHeader("Content-Type", "application/JSON"); //Création de l'entête (header)
+        const promise = new Promise((resolve, reject) => {// on crée une promesse de résultat
+            if (this.readyState == XMLHttpRequest.DONE && this.status >= 200 && this.status <= 300) {
                 resolve(this.responseText) // (à traiter avec .then)
             }
             if (this.status >399) {
                 reject(); // (à traiter avec .catch)
             }
         });
-        this.request.send(products, contact);
+        this.request.send(JSON.stringify(body)); //on envoi notre objet JS en chaîne JSON
         return promise // on retourne cette promesse
-    } */
+    } 
 }

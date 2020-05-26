@@ -8,7 +8,13 @@ class PanierProducts {
         new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
             const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
-            this.productPanierView = new ProductPanierView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
+            ///FIltrer le local Storage ici
+            this.productPanierView = new ProductPanierView(this.products, (contact)=>{
+                new Request().post("http://localhost:3000/api/cameras/order" , {
+                    contact:contact,
+                    products:["5be1ed3f1c9d44000030b061"]
+                })//.then...
+            }); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
             appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
             //this.commande = new Commande(this.products).post(); ///////////
         }).catch(()=>{
@@ -48,9 +54,23 @@ class ProductViewPanier {
 // 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
 
 class ProductPanierView {
-    constructor(products) {
-        this.products = products;
+    constructor(products, onSubmit=()=>{}
+) {
 
+        this.products = products;
+        this.form = document.getElementById("form");
+        this.form.addEventListener("submit" , function(event){
+            const contact= {};
+            contact.firstName = form.elements.firstName.value;
+            contact.lastName = form.elements.lastName.value;
+            contact.address = form.elements.address.value;
+            contact.city = form.elements.city.value;
+            contact.email = form.elements.email.value;
+            event.preventDefault();
+            event.stopPropagation();
+            console.log(contact);//TEST
+            onSubmit(contact, products);
+        });
     }
     render() { 
         const productPanierContainer = document.createElement("div"); 
@@ -65,6 +85,7 @@ class ProductPanierView {
                     productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
                     prixTotal.push(product.price);
                     articlesPanier.push(product._id);
+                    console.log(articlesPanier);//TEST
                 }
             };
         } if (prixTotal.length >0){
@@ -76,8 +97,8 @@ class ProductPanierView {
             productPanierContainer.appendChild(prixTotalPanierContainer);
         } else {
             productPanierContainer.textContent="Votre panier est vide";
-        }
-        
+        };
+
         return productPanierContainer; // on retourne le conteneur <div> avec le(s) produit(s) et le prix total
     }
 
@@ -88,5 +109,4 @@ class ProductPanierView {
 window.onload = function() {  
     const panierProducts = new PanierProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
 } 
-
 

@@ -5,7 +5,7 @@ const appContainer = document.getElementById("app");
 /* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
 class DetailProduct { 
     constructor() {
-        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+        new Request().get(`http://localhost:3000/api/cameras/${id}`).then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
             const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
             this.productDetailView = new ProductDetailView(this.products); // on  crée un objet "productDetailView" à partir de la classe "productDetailView" en lui fournissant comme paramètre les [objets JSON]
@@ -72,8 +72,7 @@ class ProductViewPP { // PP pour "Page Produit"
 class ProductDetailView { 
     constructor(products){ 
         this.products = products; // On récupère la liste des [objets JSON]
-        this.paramUrl = window.location.search; // on récupère les paramètres d'url
-        this.id = new Identifiant(this.paramUrl).determinId(); // on applique notre méthode pour récupérer l'id du produit
+        
     }
     render() { 
         const productDetailContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
@@ -91,7 +90,9 @@ class ProductDetailView {
 
 /* ########## CHARGEMENT DU PRODUIT DÈS LE CHARGEMENT COMPLET DE LA PAGE ########## */
 window.onload = function() {  
-    const detailProduct = new DetailProduct(); // Création d'un nouvel objet "detailProduct" à partir de la class "DetailProduct"
+    const paramUrl = window.location.search; // on récupère les paramètres d'url
+    const id = new Identifiant(this.paramUrl).determinId(); // on applique notre méthode pour récupérer l'id du produit
+    const detailProduct = new DetailProduct(id); // Création d'un nouvel objet "detailProduct" à partir de la class "DetailProduct" en lui envoyant l'id du produit
 } 
 
 
