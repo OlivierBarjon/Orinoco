@@ -1,24 +1,37 @@
-/* ########## RÉCUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER TOUT NOTRE CONTENU DYNAMIQUEMENT ########## */
+/* ########## RÉCUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER NOTRE CONTENU DYNAMIQUEMENT ########## */
 const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 /* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
 class PanierProducts { 
     constructor() {
-        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
-            const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
+        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // nouvel objet à partir de la classe Request à laquelle on transmet une url à sa méthode get() et qui retournera le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+            const response = JSON.parse(result);// on transforme le résultat de la promesse en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
-            ///FIltrer le local Storage ici
-            this.productPanierView = new ProductPanierView(this.products, (contact)=>{
+            //Filtrage du local Storage
+            const articlesPanier = [];//on crée un tableau qui recevra la liste des produits commandés
+            const idsProducts= []; // on crée un tableau qui recevra la liste des ids des produits commandés
+            if (localStorage.length > 0) { // si des produits sont présents dans le local storage
+                for(let product of this.products) { // pour chaque produit
+                    if (localStorage.getItem(product._id)){ //si le produit est dans le local storage
+                        articlesPanier.push(product); // on l'ajoute au tableau listant les produits commandés
+                        idsProducts.push(product._id); // on l'ajoute au tableau listant les produits commandés
+                    }
+                }
+                console.log(idsProducts);//TEST le tableau d'id envoyé sera bien une liste de strings !!!!!!!!!!
+            }
+            this.listeCommande = articlesPanier; //on transmet les [objets du LocalStorage] à une propriété listeCommande
+            // On crée une itération de la classe ProductPanierView avec en paramètre : les [objets du localStorage] et une fonction qui prend elle même 1 paramètre contact et qui itère la classe Request().post avec l'url/order et le body en paramètre
+            this.productPanierView = new ProductPanierView(this.listeCommande, (contact, products)=>{
                 new Request().post("http://localhost:3000/api/cameras/order" , {
                     contact:contact,
-                    products:["5be1ed3f1c9d44000030b061"]
-                })//.then...
-            }); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
-            appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
-            //this.commande = new Commande(this.products).post(); ///////////
+                    products: idsProducts
+                })//.then.catch...
+            }); 
+            appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de l' objet "productPanierView".
+            //this.commande = new Commande(this.products).post(); ////////////////////////// a supp ???
         }).catch(()=>{
-            console.log("erreur");
+            console.log("erreur");// on affiche une erreur en cas d'erreur sur la promesse get()
         })
     }
 }
@@ -33,18 +46,18 @@ class ProductViewPanier {
     }
     render() { 
         const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
-        const productContainer = document.createElement("div"); 
-        productContainer.innerHTML = `<p>${this.product.name} (${price} €)</p>`; 
+        const productContainer = document.createElement("div"); // création d'un conteneur
+        productContainer.innerHTML = `<p>${this.product.name} (${price} €)</p>`;  // ajout d'un contenu à ce conteneur
        
         // bouton de suppression de l'article
-        const boutonSuppPanier = document.createElement("button");
+        const boutonSuppPanier = document.createElement("button"); // création du bouton
         boutonSuppPanier.setAttribute("class", "btn btn-sm btn-outline-primary w-25");// un peu de style
         boutonSuppPanier.textContent = "Retirer cet article";
         productContainer.appendChild(boutonSuppPanier);
         const productId = this.product._id;
-        boutonSuppPanier.addEventListener("click", function(event){
-            localStorage.removeItem(productId); // supprime l'article du local storage
-            window.history.go(); // raffraichissement de la page pour supprimer le produit.
+        boutonSuppPanier.addEventListener("click", function(event){ // à l'évènement "click"...
+            localStorage.removeItem(productId); // on supprime l'article du local storage
+            window.history.go(); // raffraichissement de la page pour supprimer le produit de l'affichage
             event.stopPropagation();
             });
 
@@ -55,12 +68,12 @@ class ProductViewPanier {
 // 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
 
 class ProductPanierView {
-    constructor(products, onSubmit=()=>{}
-) {
-
-        this.products = products;
-        this.form = document.getElementById("form");
-        this.form.addEventListener("submit" , function(event){
+    constructor(listeCommande, onSubmit=()=>{}) { // le constructeur contiens le tableau de produits et une fonction
+        this.listeCommande = listeCommande;
+        //this.products = new ProductListId(listeCommande).render();// on crée l'[objet JSON] des Ids des produits à envoyer  
+        //console.log(this.products);//TEST
+        this.form = document.getElementById("form"); // récupération du formulaire de contact
+        this.form.addEventListener("submit" , function(event){ // récupération des valeurs à la soumission
             const contact= {};
             contact.firstName = form.elements.firstName.value;
             contact.lastName = form.elements.lastName.value;
@@ -69,36 +82,32 @@ class ProductPanierView {
             contact.email = form.elements.email.value;
             event.preventDefault();
             event.stopPropagation();
-            //console.log(contact);//TEST
-            onSubmit(contact, products);
+            onSubmit(contact, this.products); // on envoi le contact et les produits à la fonction de soumission
         });
     }
     render() { 
-        const productPanierContainer = document.createElement("div"); 
+        const productPanierContainer = document.createElement("div"); // on crée un conteneur pour la liste de produits
         productPanierContainer.setAttribute("class", "card mb-3 text-center panier"); //  on ajoute un peu de style
-        const prixTotalPanierContainer = document.createElement("div");
+        const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
         prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on ajoute un peu de style
-        const prixTotal = [];
-        const articlesPanier = [];
-        if (localStorage.length >0) {
-            for (let product of this.products){ // pour chaque produits
-                if (localStorage.getItem(product._id)){ // si le produit est dans le localStorage
+        const prixTotal = []; // on crée le tableau qui contiendra le prix total
+        for (let product of this.listeCommande){ // pour chaque produits
+            
                     productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
-                    prixTotal.push(product.price);
-                    articlesPanier.push(product._id);
+                    prixTotal.push(product.price); // on enregistre le prix dans le tableau 
                     //console.log(articlesPanier);//TEST
-                }
+               
             };
-        } if (prixTotal.length >0){
+        if (prixTotal.length >0){
             const reducer = (accumulator, currentValue)=> accumulator + currentValue; // Fonction reduce()
-            const totalCommande = prixTotal.reduce(reducer);
+            const totalCommande = prixTotal.reduce(reducer); // sur les valeurs du tableau de prix pour obtenir le total de la commande
             //console.log(prixTotal);//TEST
             //console.log(totalCommande);//TEST
             const totalPrice = new ConvertToPrice(totalCommande).render(); // formatage du prix
-            prixTotalPanierContainer.innerHTML = `Total de la commande = ${totalPrice} €`;
-            productPanierContainer.appendChild(prixTotalPanierContainer);
+            prixTotalPanierContainer.innerHTML = `Total de la commande = ${totalPrice} €`; // insertion du code HTML
+            productPanierContainer.appendChild(prixTotalPanierContainer); // intégration du contenu au DOM
         } else {
-            productPanierContainer.textContent="Votre panier est vide";
+            productPanierContainer.textContent="Votre panier est vide"; // si le panier est vide on affiche un message
         };
 
         return productPanierContainer; // on retourne le conteneur <div> avec le(s) produit(s) et le prix total
@@ -109,6 +118,6 @@ class ProductPanierView {
 
 /* ########## CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE ########## */
 window.onload = function() {  
-    const panierProducts = new PanierProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
+    const panierProducts = new PanierProducts(); // Création d'un nouvel objet "panierProducts" à partir de la class "PanierProducts"
 } 
 

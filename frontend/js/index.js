@@ -7,11 +7,12 @@ const appContainer = document.getElementById("app");
 
 class ListProducts { 
     constructor() {
-        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // nouvel objet à partir de la classe Request à laquelle on transmet une url à sa méthode get() et qui retournera le résultat de la résolution de la promesse utilisée dans cet même méthode get()
             const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
             this.productListView = new ProductListView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
             appContainer.appendChild(this.productListView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
+            //console.log(this.products); // TEST (retourne un array)
         }).catch(()=>{
             console.log("erreur de chargement");
         })
@@ -27,9 +28,9 @@ class ProductViewHP { // HP pour "Home Page"
         this.product = product; // le parametre "product" contient un seul objet JSON.
     }
     render() { 
-        const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
+        const price = new ConvertToPrice(this.product.price).render(); // formatage du prix grâce au composant ConvertToPrice
         const productContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON (avec l'id du produit en paramètre d'url pour le lien vers la page détail du produit)
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
         return productContainer; // on retourne l'élément du DOM "productContainer" 
     } 

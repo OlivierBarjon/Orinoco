@@ -5,11 +5,12 @@ const appContainer = document.getElementById("app");
 /* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
 class DetailProduct { 
     constructor(id) {
-        new Request().get(`http://localhost:3000/api/cameras/${id}`).then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
-            const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
-            this.product= response;  // on transmet les [objets JSON] à une propriété "products"
-            this.productDetailView = new ProductDetailView(this.product); // on  crée un objet "productDetailView" à partir de la classe "productDetailView" en lui fournissant comme paramètre les [objets JSON]
+        new Request().get(`http://localhost:3000/api/cameras/${id}`).then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet l'url exacte du produit à sa méthode get() et qui retournera le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+            const response = JSON.parse(result);// on transforme le résultat en objet JSON
+            this.product= response;  // on transmet l'objet à une propriété "product"
+            this.productDetailView = new ProductDetailView(this.product); // on  crée un objet "productDetailView" à partir de la classe "productDetailView" en lui fournissant comme paramètre l'objet à traiter
             appContainer.appendChild(this.productDetailView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productDetailView.
+            //console.log(this.product);//TEST (retourne un objet)
         }).catch(()=>{
             console.log("erreur de chargement");
         })
@@ -32,23 +33,23 @@ class ProductViewPP { // PP pour "Page Produit"
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
 
         // options lentilles
-        const labelChoixLentille = document.createElement("label");
+        const labelChoixLentille = document.createElement("label"); // on crée un label explicatif
         labelChoixLentille.setAttribute("for","LensOpt");
         labelChoixLentille.textContent = "Choisissez une lentille en option :";
-        const selectChoixLentille = document.createElement("select");
+        const selectChoixLentille = document.createElement("select"); // on crée un élément <select>
         selectChoixLentille.setAttribute("name","LensOpt");
-        selectChoixLentille.setAttribute("class","form-control mb-3 w-25 product__option-lens");
+        selectChoixLentille.setAttribute("class","form-control mb-3 w-25 product__option-lens"); // styles
         for (let lentille of this.product.lenses){ // pour chaque lentilles
             var nouvelleLentille = document.createElement("option"); // on crée un nouvel élément <option>
             var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille
             nouvelleLentille.appendChild(nouveauContenu);// on l'ajoute à l'élément <option>
             selectChoixLentille.appendChild(nouvelleLentille); // on ajoute l'élément <option> à l'élément <select>
         };
-        productContainer.appendChild(labelChoixLentille); // on ajoute notre label 
-        productContainer.appendChild(selectChoixLentille); // on ajoute notre liste de selection
+        productContainer.appendChild(labelChoixLentille); // on ajoute notre label au conteneur
+        productContainer.appendChild(selectChoixLentille); // on ajoute notre liste de selection au conteneur
 
         // bouton panier
-        const boutonPanier = document.createElement("button");
+        const boutonPanier = document.createElement("button"); // création du bouton
         boutonPanier.setAttribute("type", "button");
         boutonPanier.setAttribute("id","boutonPanier");
         boutonPanier.setAttribute("class", "btn btn-lg btn-outline-primary w-75");// un peu de style
@@ -56,9 +57,9 @@ class ProductViewPP { // PP pour "Page Produit"
         productContainer.appendChild(boutonPanier);
         const idProdLStorage = this.product._id;
         const prixProdLStorage = this.product.price;
-        boutonPanier.addEventListener("click", function(event){
-            localStorage.setItem(idProdLStorage,prixProdLStorage); // ajoute l'article au local storage
-            boutonPanier.classList.replace("btn-outline-primary","btn-primary");//modifie l'apparence du bouton
+        boutonPanier.addEventListener("click", function(event){ // au click sur le bouton
+            localStorage.setItem(idProdLStorage,prixProdLStorage); // on ajoute l'article au local storage
+            boutonPanier.classList.replace("btn-outline-primary","btn-primary");//et on modifie l'apparence du bouton
             boutonPanier.textContent = "Article ajouté au panier";//modification du texte du bouton
             event.stopPropagation();
             });
@@ -71,7 +72,7 @@ class ProductViewPP { // PP pour "Page Produit"
 
 class ProductDetailView { 
     constructor(product){ 
-        this.product = product; // On récupère la liste des [objets JSON]
+        this.product = product; // On récupère l'objet
         
     }
     render() { 
