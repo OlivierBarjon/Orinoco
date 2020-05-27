@@ -41,9 +41,9 @@ class ProductViewPanier {
         boutonSuppPanier.setAttribute("class", "btn btn-sm btn-outline-primary w-25");// un peu de style
         boutonSuppPanier.textContent = "Retirer cet article";
         productContainer.appendChild(boutonSuppPanier);
-        const productName = this.product.name;
+        const productId = this.product._id;
         boutonSuppPanier.addEventListener("click", function(event){
-            localStorage.removeItem(productName); // supprime l'article du local storage
+            localStorage.removeItem(productId); // supprime l'article du local storage
             window.history.go(); // raffraichissement de la page pour supprimer le produit.
             event.stopPropagation();
             });
@@ -69,7 +69,7 @@ class ProductPanierView {
             contact.email = form.elements.email.value;
             event.preventDefault();
             event.stopPropagation();
-            console.log(contact);//TEST
+            //console.log(contact);//TEST
             onSubmit(contact, products);
         });
     }
@@ -82,7 +82,7 @@ class ProductPanierView {
         const articlesPanier = [];
         if (localStorage.length >0) {
             for (let product of this.products){ // pour chaque produits
-                if (localStorage.getItem(product.name)){ // si le produit est dans le localStorage
+                if (localStorage.getItem(product._id)){ // si le produit est dans le localStorage
                     productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
                     prixTotal.push(product.price);
                     articlesPanier.push(product._id);

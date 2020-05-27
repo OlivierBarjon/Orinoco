@@ -54,10 +54,10 @@ class ProductViewPP { // PP pour "Page Produit"
         boutonPanier.setAttribute("class", "btn btn-lg btn-outline-primary w-75");// un peu de style
         boutonPanier.textContent = "Ajouter au panier";
         productContainer.appendChild(boutonPanier);
-        const nomProdLStorage = this.product.name;
+        const idProdLStorage = this.product._id;
         const prixProdLStorage = this.product.price;
         boutonPanier.addEventListener("click", function(event){
-            localStorage.setItem(nomProdLStorage,prixProdLStorage); // ajoute l'article au local storage
+            localStorage.setItem(idProdLStorage,prixProdLStorage); // ajoute l'article au local storage
             boutonPanier.classList.replace("btn-outline-primary","btn-primary");//modifie l'apparence du bouton
             boutonPanier.textContent = "Article ajouté au panier";//modification du texte du bouton
             event.stopPropagation();
