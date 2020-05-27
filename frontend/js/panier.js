@@ -32,8 +32,9 @@ class ProductViewPanier {
         this.product = product; // le parametre "product" contient un seul objet JSON.
     }
     render() { 
+        const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
         const productContainer = document.createElement("div"); 
-        productContainer.innerHTML = `<p>${this.product.name} (${this.product.price} €)</p>`; 
+        productContainer.innerHTML = `<p>${this.product.name} (${price} €)</p>`; 
        
         // bouton de suppression de l'article
         const boutonSuppPanier = document.createElement("button");
@@ -85,15 +86,16 @@ class ProductPanierView {
                     productPanierContainer.appendChild(new ProductViewPanier(product).render()); // j'intègre le rendu du produit
                     prixTotal.push(product.price);
                     articlesPanier.push(product._id);
-                    console.log(articlesPanier);//TEST
+                    //console.log(articlesPanier);//TEST
                 }
             };
         } if (prixTotal.length >0){
             const reducer = (accumulator, currentValue)=> accumulator + currentValue; // Fonction reduce()
             const totalCommande = prixTotal.reduce(reducer);
-            console.log(prixTotal);//TEST
-            console.log(totalCommande);//TEST
-            prixTotalPanierContainer.innerHTML = `Total de la commande = ${totalCommande} €`;
+            //console.log(prixTotal);//TEST
+            //console.log(totalCommande);//TEST
+            const totalPrice = new ConvertToPrice(totalCommande).render(); // formatage du prix
+            prixTotalPanierContainer.innerHTML = `Total de la commande = ${totalPrice} €`;
             productPanierContainer.appendChild(prixTotalPanierContainer);
         } else {
             productPanierContainer.textContent="Votre panier est vide";

@@ -1,8 +1,10 @@
 /* ########## RÉCUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER TOUT NOTRE CONTENU DYNAMIQUEMENT ########## */
+
 const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 /* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
+
 class ListProducts { 
     constructor() {
         new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
@@ -25,8 +27,9 @@ class ProductViewHP { // HP pour "Home Page"
         this.product = product; // le parametre "product" contient un seul objet JSON.
     }
     render() { 
+        const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
         const productContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${this.product.price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${price} €</p><a href="produit.html?id=${this.product._id}" type="button" class="btn btn-lg btn-outline-primary">Fiche produit</a></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
         productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
         return productContainer; // on retourne l'élément du DOM "productContainer" 
     } 
@@ -50,6 +53,7 @@ class ProductListView {
 
 
 /* ########## CHARGEMENT DE LA LISTE DES PRODUITS AU CHARGEMENT COMPLET DE LA PAGE ########## */
+
 window.onload = function() {  
     const listProducts = new ListProducts(); // Création d'un nouvel objet "listProduct" à partir de la class "ListProduct"
 }

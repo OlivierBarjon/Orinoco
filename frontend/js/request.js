@@ -6,7 +6,7 @@ class Request {
     }
 
     get(url) {
-        this.request.open("GET", url, true);
+        this.request.open("GET", url, true); 
         const promise = new Promise((resolve, reject) =>{// on crée une promesse de résultat 
             this.request.onreadystatechange = function(){// on exécute une condition sur le gestionnaire d'évènement de l'objet request
                 if (this.readyState == XMLHttpRequest.DONE && this.status == 200) {

@@ -11,7 +11,19 @@ class Identifiant {
     }
 }
 
+/* ########## COMPOSANT DE FORMATAGE DES TARIFS ########## */
 
+class ConvertToPrice {
+    constructor (number) {
+        this.number = number;
+    }
+    render(){
+        const num = this.number;
+        const numberToString = num.toString(); //convertion en string
+        const price = numberToString.replace("00", ",00"); // ajout d'une virgule avant les centimes
+        return price;
+    }
+}
 
 
 
