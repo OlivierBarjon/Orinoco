@@ -12,13 +12,13 @@ class PanierProducts {
             const articlesPanier = [];//on crée un tableau qui recevra la liste des produits commandés
             const idsProducts= []; // on crée un tableau qui recevra la liste des ids des produits commandés
             if (localStorage.length > 0) { // si des produits sont présents dans le local storage
-                for(let product of this.products) { // pour chaque produit
+                for(let product of this.products) { // pour chaque produit présent
                     if (localStorage.getItem(product._id)){ //si le produit est dans le local storage
                         articlesPanier.push(product); // on l'ajoute au tableau listant les produits commandés
-                        idsProducts.push(product._id); // on l'ajoute au tableau listant les produits commandés
+                        idsProducts.push(product._id); // on ajoute son id au tableau listant les id des produits commandés
                     }
                 }
-                console.log(idsProducts);//TEST le tableau d'id envoyé sera bien une liste de strings !!!!!!!!!!
+                console.log(idsProducts);//TEST le tableau d'id envoyé sera bien une liste de strings !
             }
             this.listeCommande = articlesPanier; //on transmet les [objets du LocalStorage] à une propriété listeCommande
             // On crée une itération de la classe ProductPanierView avec en paramètre : les [objets du localStorage] et une fonction qui prend elle même 1 paramètre contact et qui itère la classe Request().post avec l'url/order et le body en paramètre
@@ -26,12 +26,20 @@ class PanierProducts {
                 new Request().post("http://localhost:3000/api/cameras/order" , {
                     contact:contact,
                     products: idsProducts
-                })//.then.catch...
+                }).then((result)=>{
+                    const response = JSON.parse(result);
+                    localStorage.clear(); // supprime tous les éléments du localStorage
+                    localStorage.setItem("contact", response);
+                    //localStorage.setItem("products", response.products);
+                    document.location.href="confirmation.html"; // on redirige l'utilisateur vers la page de confirmation
+                }).catch(() =>{
+                    console.log("erreur de chargement");
+                });
             }); 
             appContainer.appendChild(this.productPanierView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de l' objet "productPanierView".
             //this.commande = new Commande(this.products).post(); ////////////////////////// a supp ???
         }).catch(()=>{
-            console.log("erreur");// on affiche une erreur en cas d'erreur sur la promesse get()
+            console.log("erreur de chargement");// on affiche une erreur en cas d'erreur sur la promesse get()
         })
     }
 }
@@ -47,17 +55,17 @@ class ProductViewPanier {
     render() { 
         const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
         const productContainer = document.createElement("div"); // création d'un conteneur
-        productContainer.innerHTML = `<p>${this.product.name} (${price} €)</p>`;  // ajout d'un contenu à ce conteneur
+        productContainer.innerHTML = `<p>${this.product.name} (${price} €)</p>`;  // ajout d'un contenu html à ce conteneur
        
         // bouton de suppression de l'article
         const boutonSuppPanier = document.createElement("button"); // création du bouton
         boutonSuppPanier.setAttribute("class", "btn btn-sm btn-outline-primary w-25");// un peu de style
-        boutonSuppPanier.textContent = "Retirer cet article";
-        productContainer.appendChild(boutonSuppPanier);
-        const productId = this.product._id;
+        boutonSuppPanier.textContent = "Retirer cet article"; // du texte
+        productContainer.appendChild(boutonSuppPanier); // on l'ajoute au conteneur
+        const productId = this.product._id; // on récupère son id
         boutonSuppPanier.addEventListener("click", function(event){ // à l'évènement "click"...
-            localStorage.removeItem(productId); // on supprime l'article du local storage
-            window.history.go(); // raffraichissement de la page pour supprimer le produit de l'affichage
+            localStorage.removeItem(productId); // on supprime l'article du local storage à partir de son id
+            window.history.go(); // on raffraichi la page pour supprimer le produit de l'affichage
             event.stopPropagation();
             });
 
@@ -68,10 +76,8 @@ class ProductViewPanier {
 // 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
 
 class ProductPanierView {
-    constructor(listeCommande, onSubmit=()=>{}) { // le constructeur contiens le tableau de produits et une fonction
+    constructor(listeCommande, onSubmit=()=>{}) { // le constructeur contiens le tableau de produits et une fonction onSubmit
         this.listeCommande = listeCommande;
-        //this.products = new ProductListId(listeCommande).render();// on crée l'[objet JSON] des Ids des produits à envoyer  
-        //console.log(this.products);//TEST
         this.form = document.getElementById("form"); // récupération du formulaire de contact
         this.form.addEventListener("submit" , function(event){ // récupération des valeurs à la soumission
             const contact= {};
@@ -80,16 +86,16 @@ class ProductPanierView {
             contact.address = form.elements.address.value;
             contact.city = form.elements.city.value;
             contact.email = form.elements.email.value;
-            event.preventDefault();
+            event.preventDefault(); // on empêche l'action par défaut du bouton de soumission
             event.stopPropagation();
-            onSubmit(contact, this.products); // on envoi le contact et les produits à la fonction de soumission
+            onSubmit(contact); // on utilise la fonction (en y ajoutant l'objet contact manquant)
         });
     }
     render() { 
         const productPanierContainer = document.createElement("div"); // on crée un conteneur pour la liste de produits
-        productPanierContainer.setAttribute("class", "card mb-3 text-center panier"); //  on ajoute un peu de style
+        productPanierContainer.setAttribute("class", "card mb-3 text-center panier"); //  on y ajoute un peu de style
         const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
-        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on ajoute un peu de style
+        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on y ajoute un peu de style
         const prixTotal = []; // on crée le tableau qui contiendra le prix total
         for (let product of this.listeCommande){ // pour chaque produits
             
