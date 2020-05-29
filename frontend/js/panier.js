@@ -28,9 +28,9 @@ class PanierProducts {
                     products: idsProducts
                 }).then((result)=>{
                     const response = JSON.parse(result);
-                    localStorage.clear(); // supprime tous les éléments du localStorage
-                    localStorage.setItem("contact", response);
-                    //localStorage.setItem("products", response.products);
+                    localStorage.setItem("orderId", JSON.stringify(response.orderId)); // On ajoute les éléments qui nous interessent au local Storage
+                    localStorage.setItem("firstName", JSON.stringify(response.contact.firstName));
+                    localStorage.setItem("lastName", JSON.stringify(response.contact.lastName));
                     document.location.href="confirmation.html"; // on redirige l'utilisateur vers la page de confirmation
                 }).catch(() =>{
                     console.log("erreur de chargement");

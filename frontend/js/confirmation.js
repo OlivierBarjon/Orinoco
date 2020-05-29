@@ -2,13 +2,22 @@
 const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
-// COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM
+/* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
 class Confirmation { 
     constructor() {
-        new Request().get("http://localhost:3000/api/cameras/order").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
+        new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
             const response = JSON.parse(result);// on transforme le résultat en [objets JSON]
             this.products= response;  // on transmet les [objets JSON] à une propriété "products"
-            this.confirmationView = new ConfirmationView(this.products); // on  crée un objet "productListView" à partir de la classe "ProductListView" en lui fournissant comme paramètre les [objets JSON]
+            const articlesPanier = [];//on crée un tableau qui recevra la liste des produits commandés
+            if (localStorage.length > 0) { // si des produits sont présents dans le local storage
+                for(let product of this.products) { // pour chaque produit présent
+                    if (localStorage.getItem(product._id)){ //si le produit est dans le local storage
+                        articlesPanier.push(product); // on l'ajoute au tableau listant les produits commandés
+                        }
+                    }
+                };
+            this.listeCommande = articlesPanier; //on transmet les [objets du LocalStorage] à une propriété listeCommande
+            this.confirmationView = new ConfirmationView(this.listeCommande); // on  crée un objet "confirmationView" à partir de la classe "ConfirmationView" en lui fournissant comme paramètre les produits commandés
             appContainer.appendChild(this.confirmationView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
         }).catch(()=>{
             console.log("erreur de chargement");
@@ -19,36 +28,46 @@ class Confirmation {
 
 /* ########## COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE CONFIRMATION ########## */
 
-// 2 : COMPOSANT DE GÉNÉRATION DE LA VUE DU PRODUIT
-
-class CommandeViewPC { // PC pour "Page confirmation"
-    constructor(product) { 
-        this.product = product; // le parametre "product" contient un seul objet JSON.
-    }
-
-    render() { 
-        const productContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
-        const price = new ConvertToPrice(this.product.price).render(); // formatage du prix
-        productContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.product.name}</h3></div><div class="card-body"><div class="mb-3"><img class="img-fluid" src="${this.product.imageUrl}" alt="${this.product.imageUrl}" /></div><p class="text-justify">${this.product.description}</p><p>Prix : ${price} €</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
-        productContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
-
-    
-        return productContainer; // on retourne l'élément du DOM "productContainer" 
-    } 
-}
 
 // 1 : COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM
 
 class ConfirmationView { 
-    constructor(product){ 
-        this.product = product; // On récupère l'objet
-        
+    constructor(listeCommande){ 
+        this.listeCommande = listeCommande; // On récupère les produits commandé
+        this.orderId = JSON.parse(localStorage.getItem("orderId"));//on parse les valeurs du local Storage pour supprimer les "".
+        this.firstName = JSON.parse(localStorage.getItem("firstName"));
+        this.lastName = JSON.parse(localStorage.getItem("lastName"));
     }
     render() { 
-        const productDetailContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
-        productDetailContainer.setAttribute("class", "card-deck mb-3 text-center"); // un peu de style
-        productDetailContainer.appendChild(new CommandeViewPC(this.product).render()); // on intégre le rendu crée par le composant ProductViewPP
-        return productDetailContainer; // on retourne le conteneur <div> avec le produit.
+        const productPanierContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
+        productPanierContainer.setAttribute("class", "card-deck mb-3 text-center"); // un peu de style
+
+        //info commande contact
+        const contactContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
+        contactContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.orderId}</h3></div><div class="card-body"><p class="text-justify">Merci ${this.firstName} ${this.lastName}</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        contactContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
+        productPanierContainer.appendChild(contactContainer);
+
+
+        //prix total
+        const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
+        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on y ajoute un peu de style
+        const prixTotal = []; // on crée le tableau qui contiendra le prix total
+        for (let product of this.listeCommande){ // pour chaque produits
+                    prixTotal.push(product.price); // on enregistre le prix dans le tableau 
+                    //console.log(articlesPanier);//TEST 
+            };
+        const reducer = (accumulator, currentValue)=> accumulator + currentValue; // Fonction reduce()
+        const totalCommande = prixTotal.reduce(reducer); // sur les valeurs du tableau de prix pour obtenir le total de la commande
+        //console.log(prixTotal);//TEST
+        //console.log(totalCommande);//TEST
+        const totalPrice = new ConvertToPrice(totalCommande).render(); // formatage du prix
+        prixTotalPanierContainer.innerHTML = `Montant de votre facture = ${totalPrice} €`; // insertion du code HTML
+        productPanierContainer.appendChild(prixTotalPanierContainer); // intégration du contenu au DOM
+
+
+        
+        return productPanierContainer; // on retourne le conteneur <div> avec le produit.
     }
 }
 
