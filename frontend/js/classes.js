@@ -1,12 +1,12 @@
 
-/* ########## COMPOSANT DE RECUPERATION DE L'IDENTIFIANT DU PRODUIT A PARTIR DE LA CHAINE DES PARAMETRES DE L'URL ########## */
+/* ########## COMPOSANT DE RECUPERATION DE L'IDENTIFIANT DU PRODUIT A PARTIR DES PARAMETRES DE L'URL ########## */
 
 class Identifiant {
     constructor(paramUrl){
-        this.paramUrl = paramUrl;
+        this.paramUrl = paramUrl; // on récupère un paramètre d'url
     }
     determinId () {
-        const id = this.paramUrl.split("="); // On split ce paramètre d'url en utilisant le "=" comme séparateur
+        const id = this.paramUrl.split("="); // On split le paramètre d'url en utilisant "=" comme séparateur
         return id[1]; // on retourne l'id qui se situe après le "="
     }
 }
@@ -15,7 +15,7 @@ class Identifiant {
 
 class ConvertToPrice {
     constructor (number) {
-        this.number = number;
+        this.number = number; // On récupère un nombre
     }
     render(){
         const num = this.number;
@@ -25,17 +25,3 @@ class ConvertToPrice {
     }
 }
 
-/* ########## COMPOSANT DE GENERATION DE LA LISTE DES ID PRODUITS A ENVOYER VIA LE FORMULAIRE ########## */
-
-/* class ProductListId {
-    constructor(listeCommande) {
-        this.listeCommande = listeCommande; // a partir de la liste de produit
-    }
-    render(){
-        const productsIdList = [];
-        for (let product of this.listeCommande) {
-            productsIdList.push(product._id);
-         } 
-         return productsIdList; // on retourne un tableau d'ids
-    }
-} */

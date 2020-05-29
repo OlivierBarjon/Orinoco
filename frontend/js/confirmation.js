@@ -1,4 +1,5 @@
-// RÉCUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER TOUT NOTRE CONTENU DYNAMIQUEMENT
+/* ########## RÉCUPERATION D'UN EMPLACEMENT DU DOM POUR Y INJECTER TOUT NOTRE CONTENU DYNAMIQUEMENT ########## */
+
 const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
@@ -42,16 +43,7 @@ class ConfirmationView {
         const productPanierContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
         productPanierContainer.setAttribute("class", "card-deck mb-3 text-center"); // un peu de style
 
-        //info commande contact
-        const contactContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
-        contactContainer.innerHTML = `<div class="card-header"><h3 class="my-0 font-weight-normal">${this.orderId}</h3></div><div class="card-body"><p class="text-justify">Merci ${this.firstName} ${this.lastName}</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
-        contactContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
-        productPanierContainer.appendChild(contactContainer);
-
-
-        //prix total
-        const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
-        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on y ajoute un peu de style
+        // récupération du prix total
         const prixTotal = []; // on crée le tableau qui contiendra le prix total
         for (let product of this.listeCommande){ // pour chaque produits
                     prixTotal.push(product.price); // on enregistre le prix dans le tableau 
@@ -59,11 +51,20 @@ class ConfirmationView {
             };
         const reducer = (accumulator, currentValue)=> accumulator + currentValue; // Fonction reduce()
         const totalCommande = prixTotal.reduce(reducer); // sur les valeurs du tableau de prix pour obtenir le total de la commande
-        //console.log(prixTotal);//TEST
-        //console.log(totalCommande);//TEST
         const totalPrice = new ConvertToPrice(totalCommande).render(); // formatage du prix
-        prixTotalPanierContainer.innerHTML = `Montant de votre facture = ${totalPrice} €`; // insertion du code HTML
-        productPanierContainer.appendChild(prixTotalPanierContainer); // intégration du contenu au DOM
+
+
+        //info commande contact
+        const contactContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
+        contactContainer.innerHTML = `<div class="card-body"><p class="text-center">Merci ${this.firstName} ${this.lastName} pour votre commande</p><p>Identifiant à conserver:<br /> ${this.orderId} </p><p>Montant total de ${totalPrice} €</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
+        contactContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
+        productPanierContainer.appendChild(contactContainer);
+
+
+        //récupération du prix total
+        const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
+        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on y ajoute un peu de style
+        
 
 
         
@@ -72,7 +73,8 @@ class ConfirmationView {
 }
 
 
-// CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE
+/* ########## CHARGEMENT DE LA LISTE DES PRODUITS AU CHARGEMENT COMPLET DE LA PAGE ########## */
+
 window.onload = function() {  
     const confirmation = new Confirmation(); // Création d'un nouvel objet "confirmation" à partir de la class "Confirmation"
 } 
