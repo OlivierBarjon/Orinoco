@@ -25,3 +25,9 @@ class ConvertToPrice {
     }
 }
 
+
+/* const testConversion = new ConvertToPrice (100);
+console.log(testConversion.render()); // doit afficher 1,00 */
+
+/* const testDeterminId = new Identifiant("id=le récupérateur d'id fonctionne correctement");
+console.log(testDeterminId.determinId()); */

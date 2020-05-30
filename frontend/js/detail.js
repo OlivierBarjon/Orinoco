@@ -15,6 +15,7 @@ class DetailProduct {
             //console.log(this.product);//TEST (retourne un objet)
         }).catch(()=>{
             console.log("erreur de chargement"); // si on à une réponse du type 4XX ou 5XX, on affiche un message d'erreur
+            appContainer.textContent = "aucun produit sélectionné"; // on affiche un message à l'utilisateur
         })
     }
 }
@@ -92,7 +93,7 @@ window.onload = function() {
     const paramUrl = window.location.search; // on récupère les paramètres d'url
     const id = new Identifiant(paramUrl).determinId(); // on applique notre méthode pour récupérer l'id du produit
     const detailProduct = new DetailProduct(id); // on crée nouvel objet "detailProduct" à partir de la class "DetailProduct" en lui envoyant l'id du produit en paramètre
-    //console.log(id);//TEST
+    //console.log(id);//TEST (doit afficher l'id du produit demandé)
 } 
 
 

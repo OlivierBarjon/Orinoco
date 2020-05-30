@@ -47,7 +47,7 @@ class ProductListView {
         const productListContainer = document.createElement("div"); // on crée un bloc  <div>
         productListContainer.setAttribute("class", "card-deck mb-3 text-center"); //  on y ajoute un peu de style
         for (let product of this.products){ // Pour chaque produit de cette liste de produit
-          productListContainer.appendChild(new ProductViewHP(product).render()); // on ajoute à notre bloc <div> le rendu crée par le composant de génération de vue produit (soit la classe ProductViewHP)
+            productListContainer.appendChild(new ProductViewHP(product).render()); // on ajoute à notre bloc <div> le rendu crée par le composant de génération de vue produit (soit la classe ProductViewHP)
         };
         return productListContainer; // on retourne le conteneur <div> avec tous les produits.
     }
