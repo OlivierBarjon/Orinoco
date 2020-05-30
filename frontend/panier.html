@@ -39,29 +39,29 @@
 
             <div class="col-sm-6 my-1 px-3">
               <label for="firstName">Prénom :</label>
-              <input type="text" name="firstName" id="firstName" class="form-control" required />
+              <input type="text" name="firstName" id="firstName" class="form-control" pattern="[A-Za-z- é]{2,}" required /><!-- regEx :Lettres tirets espaces "é" uniquement, 2 caractères minimum-->
             </div>
 
             <div class="col-sm-6 my-1 px-3">
               <label for="lastName" >Nom :</label>
-              <input type="text" name="lastName" id="lastName" class="form-control" required />
+              <input type="text" name="lastName" id="lastName" class="form-control" pattern="[A-Za-z- é]{2,}" required /><!-- regEx :Lettres tirets espaces "é" uniquement, 2 caractères minimum-->
             </div>
 
 
             <div class="col-sm-6 my-1 px-3">
               <label for="address">Adresse :</label>
-              <input type="text" name="address" id="address" class="form-control" required />
+              <input type="text" name="address" id="address" class="form-control" pattern="[A-Za-z0-9- ,é]{2,}" required /><!-- regEx :Lettres chiffres virgules tirets espaces uniquement, 2 caractères minimum-->
             </div>
 
             <div class="col-sm-6 my-1 px-3">
               <label for="city">Ville :</label>
-              <input type="text" name="city" id="city" class="form-control" required />
+              <input type="text" name="city" id="city" class="form-control" pattern="[A-Za-z- é]{2,}" required /><!-- regEx :Lettres tirets espaces uniquement, 2 caractères minimum-->
             </div>
     
 
             <div class="col-sm-12 my-3 px-3">
               <label for="email">Email :</label>
-              <input type="email" name="email" id="email" class="form-control" required />
+              <input type="email" name="email" id="email" class="form-control" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required /><!-- regEx : commence par au moins un chiffre, lettre, point, underscore, modulo, plus, moins ; suivi d'un arobase ; suivi d'au moins une lettre, un chiffre, un point, un tiret suivi d'un point suivi (et pour finir) d'au moins 2 lettres-->
             </div>
 
             <div class="col-sm-12 my-3">

@@ -78,17 +78,17 @@ class ProductViewPanier {
 
 class ProductPanierView {
     constructor(listeCommande, onSubmit=()=>{}) { // le constructeur contiens le tableau de produits et une fonction onSubmit
-        this.listeCommande = listeCommande;
+        this.listeCommande = listeCommande; // on récupère la liste des produits commandés
         this.form = document.getElementById("form"); // récupération du formulaire de contact
         this.form.addEventListener("submit" , function(event){ // récupération des valeurs à la soumission
-            const contact= {};
-            contact.firstName = form.elements.firstName.value;
+            const contact= {}; // on crée un objet contact vide
+            contact.firstName = form.elements.firstName.value; // on remplit l'objet contact avec les valeurs du formulaire
             contact.lastName = form.elements.lastName.value;
             contact.address = form.elements.address.value;
             contact.city = form.elements.city.value;
             contact.email = form.elements.email.value;
             event.preventDefault(); // on empêche l'action par défaut du bouton de soumission
-            event.stopPropagation();
+            event.stopPropagation(); // on empêche la propagation
             onSubmit(contact); // on utilise la fonction (en y ajoutant l'objet contact manquant)
         });
     }
