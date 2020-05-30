@@ -22,7 +22,7 @@ class ListProducts {
 
 /* ########## COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA HOME PAGE ######### */
 
-// 2 : COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT
+/* - 2 : COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT ##### */
 
 class ProductViewHP { // HP pour "Home Page"
     constructor(product) { 
@@ -37,7 +37,7 @@ class ProductViewHP { // HP pour "Home Page"
     } 
 }
 
-// 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DES PRODUITS A INTEGRER AU AU DOM
+/* - 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DES PRODUITS A INTEGRER AU AU DOM ##### */
 
 class ProductListView { 
     constructor(products){ 

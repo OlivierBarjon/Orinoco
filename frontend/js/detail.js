@@ -21,7 +21,7 @@ class DetailProduct {
 
 /* ########## COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE PRODUIT ########## */
 
-// 2 : COMPOSANT DE GÉNÉRATION DE LA VUE DU PRODUIT
+/* - 2 : COMPOSANT DE GÉNÉRATION DE LA VUE DU PRODUIT ##### */
 
 class ProductViewPP { // PP pour "Page Produit"
     constructor(product) { 
@@ -70,7 +70,7 @@ class ProductViewPP { // PP pour "Page Produit"
     } 
 }
 
-// 1 : COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM
+/* - 1 : COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM ##### */
 
 class ProductDetailView { 
     constructor(product){ 

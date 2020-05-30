@@ -4,6 +4,7 @@ const appContainer = document.getElementById("app");
 //console.log(appContainer); // TEST
 
 /* ########## COMPOSANT DE RECUPERATION DES [OBJETS JSON] ET D'INTEGRATION DE LEUR INTEGRATION (APRÈS TRAITEMENT) AU DOM ########## */
+
 class Confirmation { 
     constructor() {
         new Request().get("http://localhost:3000/api/cameras").then((result)=>{ // création d'un nouvel objet à partir de la classe Request auquel on transmet une url à sa méthode get() et un paramètre contenant le résultat de la résolution de la promesse utilisée dans cet même méthode get()
@@ -29,15 +30,14 @@ class Confirmation {
 
 /* ########## COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE CONFIRMATION ########## */
 
-
-// 1 : COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM
+/* - 1 : COMPOSANT DE GÉNÉRATION DU CONTENEUR A INTEGRER AU AU DOM ##### */
 
 class ConfirmationView { 
     constructor(listeCommande){ 
         this.listeCommande = listeCommande; // On récupère les produits commandé
-        this.orderId = JSON.parse(localStorage.getItem("orderId"));//on parse les valeurs du local Storage pour supprimer les "".
-        this.firstName = JSON.parse(localStorage.getItem("firstName"));
-        this.lastName = JSON.parse(localStorage.getItem("lastName"));
+        this.orderId = JSON.parse(localStorage.getItem("orderId")); //on parse les valeurs du local Storage pour supprimer les guillemets
+        this.firstName = JSON.parse(localStorage.getItem("firstName")); //on parse les valeurs du local Storage pour supprimer les guillemets
+        this.lastName = JSON.parse(localStorage.getItem("lastName")); //on parse les valeurs du local Storage pour supprimer les guillemets
     }
     render() { 
         const productPanierContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
@@ -49,26 +49,18 @@ class ConfirmationView {
                     prixTotal.push(product.price); // on enregistre le prix dans le tableau 
                     //console.log(articlesPanier);//TEST 
             };
-        const reducer = (accumulator, currentValue)=> accumulator + currentValue; // Fonction reduce()
-        const totalCommande = prixTotal.reduce(reducer); // sur les valeurs du tableau de prix pour obtenir le total de la commande
-        const totalPrice = new ConvertToPrice(totalCommande).render(); // formatage du prix
+        const reducer = (accumulator, currentValue)=> accumulator + currentValue; // on crée une fonction reduce()
+        const totalCommande = prixTotal.reduce(reducer); // on applique cette fonction sur les valeurs du tableau de prix pour obtenir le total de la commande
+        const totalPrice = new ConvertToPrice(totalCommande).render(); // on formate le nombre obtenu en euros avec le composant ConvertToPrice
 
 
-        //info commande contact
-        const contactContainer = document.createElement("div"); // création d'un élément du DOM de type <div> : "productContainer"
-        contactContainer.innerHTML = `<div class="card-body"><p class="text-center">Merci ${this.firstName} ${this.lastName} pour votre commande</p><p>Identifiant à conserver:<br /> ${this.orderId} </p><p>Montant total de ${totalPrice} €</p></div>`; // ... cette <div> contiendra les éléments HTML remplis par les valeurs de l'objet JSON
-        contactContainer.setAttribute("class", "card mb-4 shadow-sm");// un peu de style
-        productPanierContainer.appendChild(contactContainer);
-
-
-        //récupération du prix total
-        const prixTotalPanierContainer = document.createElement("div"); // on crée un conteneur pour le prix total
-        prixTotalPanierContainer.setAttribute("class", "mb-3 text-center"); //  on y ajoute un peu de style
+        //message de confirmation de commande
+        const contactContainer = document.createElement("div"); // on crée un élément du DOM de type <div> : "contactContainer"
+        contactContainer.innerHTML = `<div class="card-body"><p class="text-center">Merci ${this.firstName} ${this.lastName} pour votre commande</p><p>Identifiant à conserver:<br /> ${this.orderId} </p><p>Montant total de ${totalPrice} €</p></div>`; // cette <div> contiendra les éléments HTML remplis par les valeurs du localStorage
+        contactContainer.setAttribute("class", "card mb-4 shadow-sm");// on ajoute un peu de style
+        productPanierContainer.appendChild(contactContainer); // on ajoute notre message au conteneur
         
-
-
-        
-        return productPanierContainer; // on retourne le conteneur <div> avec le produit.
+        return productPanierContainer; // on retourne le conteneur <div> avec le message complet
     }
 }
 

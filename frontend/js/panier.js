@@ -47,7 +47,7 @@ class PanierProducts {
 
 /* ########## COMPOSANTS DE TRAITEMENT DES OBJETS JSON POUR LA PAGE PANIER ########## */
 
-// 2 : COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT DU PANIER
+/* - 2 : COMPOSANT DE GÉNÉRATION DE VUE TYPE D'UN PRODUIT DU PANIER ##### */
 
 class ProductViewPanier { 
     constructor(product) { 
@@ -74,7 +74,7 @@ class ProductViewPanier {
     } 
 }
 
-// 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM
+/* - 1 : COMPOSANT DE GÉNÉRATION DE LA VUE DE LA LISTE DE(S) PRODUIT(S) DU PANIER A INTEGRER AU AU DOM ##### */
 
 class ProductPanierView {
     constructor(listeCommande, onSubmit=()=>{}) { // le constructeur contiens le tableau de produits et une fonction onSubmit
@@ -122,6 +122,7 @@ class ProductPanierView {
 
 
 /* ########## CHARGEMENT DE LA LISTE COMPLÈTE DÈS LE CHARGEMENT COMPLET DE LA PAGE ########## */
+
 window.onload = function() {  
     const panierProducts = new PanierProducts(); // Création d'un nouvel objet "panierProducts" à partir de la class "PanierProducts"
 } 
