@@ -90,6 +90,7 @@ class ProductPanierView {
             event.preventDefault(); // on empêche l'action par défaut du bouton de soumission
             event.stopPropagation(); // on empêche la propagation
             onSubmit(contact); // on utilise la fonction (en y ajoutant l'objet contact manquant)
+            //console.log(contact); //TEST
         });
     }
     render() { 
@@ -113,6 +114,8 @@ class ProductPanierView {
             productPanierContainer.appendChild(prixTotalPanierContainer); // on intégre le conteneur de prix au conteneur du panier
         } else {
             productPanierContainer.textContent="Votre panier est vide"; // si le panier est vide on affiche un message
+            const blocForm = document.getElementById("blocForm");//On récupère le conteneur du formulaire
+            blocForm.style.display="none"; // on cache le formulaire
         };
 
         return productPanierContainer; // on retourne le conteneur <div> avec le(s) produit(s) et le prix total
