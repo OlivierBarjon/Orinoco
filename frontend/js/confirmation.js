@@ -23,6 +23,7 @@ class Confirmation {
             appContainer.appendChild(this.confirmationView.render()); // et on ajoute à l'élément "app" du DOM, un élément enfant qui sera le retour du rendu de cet objet "productListView".
         }).catch(()=>{
             console.log("erreur de chargement");
+            appContainer.textContent="Mais c'est encore mieux avec quelques articles dans votre panier :-)";
         })
     }
 }
