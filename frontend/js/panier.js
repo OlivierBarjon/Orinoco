@@ -33,7 +33,7 @@ class PanierProducts {
                     localStorage.setItem("orderId", JSON.stringify(response.orderId)); // On ajoute le numéro de commande retourné par le serveur au local Storage
                     localStorage.setItem("firstName", JSON.stringify(response.contact.firstName)); // On ajoute le prénom du contact retourné par le serveur au local Storage
                     localStorage.setItem("lastName", JSON.stringify(response.contact.lastName)); // On ajoute le nom du contact retourné par le serveur au local Storage
-                    document.location.href="confirmation.html"; // on redirige l'utilisateur vers la page de confirmation
+                    document.location.href="confirmation.html"; // on redirige l'utilisateur vers la page de confirmation (commentez cette ligne pour controler la réponse de l'api)
                 }).catch(() =>{
                     console.log("erreur de chargement"); // on affiche un message en cas d'erreur sur la promesse post()
                 });

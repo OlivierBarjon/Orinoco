@@ -44,7 +44,7 @@ class ProductViewPP { // PP pour "Page Produit"
         selectChoixLentille.setAttribute("class","form-control mb-3 w-25 product__option-lens"); // on y ajoute un peu de style
         for (let lentille of this.product.lenses){ // pour chaque lentilles
             var nouvelleLentille = document.createElement("option"); // on crée un nouvel élément <option>
-            var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille
+            var nouveauContenu = document.createTextNode(lentille); // on récupère la lentille dans une variable
             nouvelleLentille.appendChild(nouveauContenu);// on l'ajoute à l'élément <option>
             selectChoixLentille.appendChild(nouvelleLentille); // on ajoute l'élément <option> à l'élément <select>
         };
