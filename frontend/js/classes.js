@@ -26,6 +26,8 @@ class ConvertToPrice {
 }
 
 
+/* ##### TESTS ##### */
+
 /* const testConversion = new ConvertToPrice (100);
 console.log(testConversion.render()); // doit afficher 1,00 */
 
