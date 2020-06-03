@@ -41,8 +41,8 @@ class ConfirmationView {
         this.lastName = JSON.parse(localStorage.getItem("lastName")); //on parse les valeurs du local Storage pour supprimer les guillemets
     }
     render() { 
-        const productPanierContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
-        productPanierContainer.setAttribute("class", "card-deck mb-3 text-center"); // un peu de style
+        const confirmationContainer = document.createElement("div"); // on crée un élément <div> du DOM qui s'appelle "productDetailContainer"
+        confirmationContainer.setAttribute("class", "card-deck mb-3 text-center"); // un peu de style
 
         // récupération du prix total
         const prixTotal = []; // on crée le tableau qui contiendra le prix total
@@ -58,9 +58,9 @@ class ConfirmationView {
         const contactContainer = document.createElement("div"); // on crée un élément du DOM de type <div> : "contactContainer"
         contactContainer.innerHTML = `<div class="card-body"><p class="text-center">Merci ${this.firstName} ${this.lastName} pour votre commande.</p><p>Identifiant à conserver:<br /> ${this.orderId} </p><p>Montant total = ${totalPrice} €</p></div>`; // cette <div> contiendra les éléments HTML remplis par les valeurs du localStorage
         contactContainer.setAttribute("class", "card mb-4 shadow-sm");// on ajoute un peu de style
-        productPanierContainer.appendChild(contactContainer); // on ajoute notre message au conteneur
+        confirmationContainer.appendChild(contactContainer); // on ajoute notre message au conteneur
         
-        return productPanierContainer; // on retourne le conteneur <div> avec le message complet
+        return confirmationContainer; // on retourne le conteneur <div> avec le message complet
     }
 }
 
